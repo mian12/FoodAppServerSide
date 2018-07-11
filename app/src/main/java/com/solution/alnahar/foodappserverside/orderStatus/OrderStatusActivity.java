@@ -16,9 +16,12 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.solution.alnahar.foodappserverside.Common.Common;
 import com.solution.alnahar.foodappserverside.HomeActivity;
@@ -26,8 +29,17 @@ import com.solution.alnahar.foodappserverside.Interface.ItemClickListener;
 import com.solution.alnahar.foodappserverside.R;
 import com.solution.alnahar.foodappserverside.TrackOrderActivity;
 import com.solution.alnahar.foodappserverside.ViewHolder.OrderViewHolder;
+import com.solution.alnahar.foodappserverside.fcmModel.MyResponse;
+import com.solution.alnahar.foodappserverside.fcmModel.Notification;
+import com.solution.alnahar.foodappserverside.fcmModel.Sender;
 import com.solution.alnahar.foodappserverside.model.Request;
+import com.solution.alnahar.foodappserverside.model.Token;
 import com.solution.alnahar.foodappserverside.orderDetail.OrderDetailActivity;
+import com.solution.alnahar.foodappserverside.remote.APIService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class OrderStatusActivity extends AppCompatActivity {
@@ -41,6 +53,10 @@ public class OrderStatusActivity extends AppCompatActivity {
     FirebaseRecyclerAdapter<Request, OrderViewHolder> adapter;
 
     MaterialSpinner spinner;
+    String spinnerItemSelected="";
+
+
+    APIService mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +67,9 @@ public class OrderStatusActivity extends AppCompatActivity {
         // init firebase
         database = FirebaseDatabase.getInstance();
         requests_db_ref = database.getReference("Requests");
+
+
+        mService=Common.getFCMClient();
 
         recyclerView_orderStatus = findViewById(R.id.orderStatus);
         layoutManager = new LinearLayoutManager(this);
@@ -161,6 +180,13 @@ public class OrderStatusActivity extends AppCompatActivity {
         spinner=view.findViewById(R.id.statusSpinner);
 
         spinner.setItems("Placed","On My Way","Shipped");
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                spinnerItemSelected=item;
+               // Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+            }
+        });
         alertDialog.setView(view);
         alertDialog.setIcon(R.drawable.ic_update_black_24dp);
 
@@ -176,6 +202,8 @@ public class OrderStatusActivity extends AppCompatActivity {
                requests_db_ref.child(localKey).setValue(item);
                adapter.notifyDataSetChanged();
 
+               sendOrderStatusToUser(localKey,item);
+
 
             }
         });
@@ -189,6 +217,56 @@ public class OrderStatusActivity extends AppCompatActivity {
         });
 
         alertDialog.show();
+
+    }
+
+    private void sendOrderStatusToUser(final String key,final Request item) {
+       DatabaseReference  tokens_db_ref= database.getReference("Tokens");
+
+       tokens_db_ref.orderByKey().equalTo(item.getPhone()).addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+
+               for (DataSnapshot postSnapShot:dataSnapshot.getChildren())
+               {
+
+                  Token token= postSnapShot.getValue(Token.class);
+
+                  //  make raw payload
+                   Notification notification=new Notification("Grace Food","Your Order "+key+ "  "+spinnerItemSelected);
+                   Sender content=new Sender(token.getToken(),notification);
+
+                   mService.sendNotification(content).enqueue(new Callback<MyResponse>() {
+                       @Override
+                       public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+
+                           if (response.body().success==1)
+                           {
+                               Toast.makeText(OrderStatusActivity.this, "Order  updated!!", Toast.LENGTH_SHORT).show();
+                           }
+                           else
+                           {
+                               Toast.makeText(OrderStatusActivity.this, "Order updated but failed to send notification", Toast.LENGTH_SHORT).show();
+                           }
+
+                       }
+
+                       @Override
+                       public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                       }
+                   });
+
+               }
+
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+
 
     }
 

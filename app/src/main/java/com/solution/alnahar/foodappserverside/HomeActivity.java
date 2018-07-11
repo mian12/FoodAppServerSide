@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -41,6 +42,7 @@ import com.solution.alnahar.foodappserverside.Common.Common;
 import com.solution.alnahar.foodappserverside.Interface.ItemClickListener;
 import com.solution.alnahar.foodappserverside.ViewHolder.MenuViewHolder;
 import com.solution.alnahar.foodappserverside.model.Category;
+import com.solution.alnahar.foodappserverside.model.Token;
 import com.solution.alnahar.foodappserverside.orderStatus.OrderStatusActivity;
 import com.solution.alnahar.foodappserverside.subCategory.FoodListActivity;
 import com.squareup.picasso.Picasso;
@@ -129,7 +131,18 @@ public class HomeActivity extends AppCompatActivity
 
 
         loadMenu();
+        
+        
+        updateToken(FirebaseInstanceId.getInstance().getToken());
 
+    }
+
+    private void updateToken(String token) {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference tokens_db_ref = database.getReference("Tokens");
+        Token data = new Token(token, true); // because this token is send from server side thats why is a true
+        tokens_db_ref.child(Common.currentUser.getPhone()).setValue(data);
     }
 
     private void showDialog() {

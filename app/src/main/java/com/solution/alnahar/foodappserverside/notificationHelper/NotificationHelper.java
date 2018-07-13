@@ -63,7 +63,7 @@ public class NotificationHelper  extends ContextWrapper{
                 .setContentText(body)
                 .setSmallIcon(R.drawable.ic_notifications_active_black_24dp)
                 .setSound(soundUri)
-                .setAutoCancel(false);
+                .setAutoCancel(true);
     }
 
 }

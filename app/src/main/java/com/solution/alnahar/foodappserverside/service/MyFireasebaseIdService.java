@@ -23,7 +23,7 @@ public class MyFireasebaseIdService extends FirebaseInstanceIdService {
         FirebaseDatabase database=FirebaseDatabase.getInstance();
         DatabaseReference tokens_db_ref= database.getReference("Tokens");
 
-        Token token=new Token(tokenRefreshed,false); // because this token is send from  server  side thats why is true
+        Token token=new Token(tokenRefreshed,false); // because this token is send from  server side thats why is true
 
         tokens_db_ref.child(Common.currentUser.getPhone()).setValue(token);
     }

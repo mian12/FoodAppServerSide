@@ -233,7 +233,7 @@ public class OrderStatusActivity extends AppCompatActivity {
                   Token token= postSnapShot.getValue(Token.class);
 
                   //  make raw payload
-                   Notification notification=new Notification("Grace Food","Your Order "+key+ "  "+spinnerItemSelected);
+                   Notification notification=new Notification("Food Order","Your Order "+key+ "  "+spinnerItemSelected);
                    Sender content=new Sender(token.getToken(),notification);
 
                    mService.sendNotification(content).enqueue(new Callback<MyResponse>() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background_food_server"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -13,10 +13,7 @@
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/logo" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -35,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
+            android:backgroundTint="#191970"
             android:text="Sign In"
             android:textColor="@android:color/white"
             />

@@ -18,7 +18,7 @@ public class OrderViewHolder extends RecyclerView.ViewHolder {
 
    public FButton  btnEdit,btnRemove,btnDetail,btnDirection;
 
-    public TextView order_id, order_status, order_phone, order_address;
+    public TextView order_id, order_status, order_phone, order_address,order_date;
     public ImageView menuImage;
 
     public OrderViewHolder(View itemView) {
@@ -28,6 +28,8 @@ public class OrderViewHolder extends RecyclerView.ViewHolder {
         order_status = itemView.findViewById(R.id.order_status);
         order_phone = itemView.findViewById(R.id.order_phone);
         order_address = itemView.findViewById(R.id.order_address);
+
+        order_date= itemView.findViewById(R.id.order_date);
 
         btnEdit= itemView.findViewById(R.id.btnEdit);
         btnRemove= itemView.findViewById(R.id.btRemove);

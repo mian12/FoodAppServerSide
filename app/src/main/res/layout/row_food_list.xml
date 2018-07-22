@@ -17,7 +17,8 @@
             android:id="@+id/foodList_imge"
             android:src="@drawable/ic_launcher_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/foodList_name"

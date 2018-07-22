@@ -30,6 +30,15 @@
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center_vertical|start"/>
             <TextView
+                android:id="@+id/order_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dd-mm-yyy"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical|start"/>
+            <TextView
                 android:id="@+id/order_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,6 +73,8 @@
             android:layout_weight="4"
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:weightSum="4"
+            android:gravity="center"
             android:layout_height="wrap_content">
 
 
@@ -71,9 +82,9 @@
                 android:id="@+id/btnEdit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
+                android:layout_margin="5dp"
                 android:text="Edit"
+                android:layout_weight="1"
                 android:textColor="@android:color/white"
                 app:cornerRadius="10dp"
                 app:fButtonColor="@color/colorPrimaryDark"
@@ -84,9 +95,10 @@
                 android:id="@+id/btRemove"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
+                android:layout_margin="5dp"
                 android:text="Remove"
+                android:layout_weight="1"
+
                 android:textColor="@android:color/white"
                 app:cornerRadius="10dp"
                 app:fButtonColor="@color/colorPrimaryDark"
@@ -97,9 +109,10 @@
                 android:id="@+id/btnDetail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
+                android:layout_margin="5dp"
                 android:text="Detail"
+                android:layout_weight="1"
+
                 android:textColor="@android:color/white"
                 app:cornerRadius="10dp"
                 app:fButtonColor="@color/colorPrimaryDark"
@@ -110,7 +123,7 @@
                 android:id="@+id/btnDirection"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:text="Direction"
                 android:textColor="@android:color/white"

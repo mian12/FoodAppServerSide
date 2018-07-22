@@ -102,6 +102,8 @@ public class OrderStatusActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull OrderViewHolder holder, final int position, @NonNull final Request model) {
 
                 holder.order_id.setText(adapter.getRef(position).getKey());
+                // convert timeStamp to Actual date then set on textView
+                holder.order_date.setText(Common.getDate(Long.parseLong(adapter.getRef(position).getKey())));
                 holder.order_phone.setText(model.getPhone());
                 holder.order_address.setText(model.getAddress());
                 holder.order_status.setText(Common.convertCodeToStatus(model.getStatus()));
@@ -117,7 +119,24 @@ public class OrderStatusActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        deleteOrder(adapter.getRef(position).getKey());
+                        new AlertDialog.Builder(OrderStatusActivity.this)
+                                .setMessage("Are you sure you want to delete?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // start code from here
+
+                                        deleteOrder(adapter.getRef(position).getKey());
+
+                                        // end code here
+
+
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
+
+
                     }
                 });
                 holder.btnDetail.setOnClickListener(new View.OnClickListener() {
